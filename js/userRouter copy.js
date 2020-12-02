@@ -59,7 +59,7 @@ exports.router.get('/', function (req, res) {
         return __generator(this, function (_a) {
             switch (_a.label) {
                 case 0: return [4 /*yield*/, functions_1.query('SELECT `users`.`id`,`users`.`userName`,`users`.`name`,`users`.`permission` FROM `hackton`.`users`;', [])
-                        .catch(functions_1.errHandlerExpress('get_user', 400, res))];
+                        .catch(functions_1.errHandlerExpress('add_user', 400, res))];
                 case 1:
                     users = _a.sent();
                     res.json(users);
@@ -131,7 +131,7 @@ exports.router.delete('/:userId', function (req, res) {
                     if (+req.params.userId == 1)
                         return [2 /*return*/, functions_1.errHandlerExpress('add_user', 400, res)('not delete user number 1')];
                     if (((_a = functions_1.chackToken(req.headers.authentication)) === null || _a === void 0 ? void 0 : _a.permission) != 'admin')
-                        return [2 /*return*/, functions_1.errHandlerExpress('delete_user', 401, res)('not admin permission')];
+                        return [2 /*return*/, functions_1.errHandlerExpress('add_user', 401, res)('not admin permission')];
                     sql = ' DELETE FROM `hackton`.`users` WHERE `users`.`id` = ? ;';
                     return [4 /*yield*/, functions_1.query(sql, [req.params.userId]).catch(functions_1.errHandlerExpress('add_user', 400, res))];
                 case 1:
@@ -145,4 +145,4 @@ exports.router.delete('/:userId', function (req, res) {
         });
     });
 });
-//# sourceMappingURL=userRouter.js.map
+//# sourceMappingURL=userRouter copy.js.map

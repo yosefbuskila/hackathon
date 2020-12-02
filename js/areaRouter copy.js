@@ -1,15 +1,4 @@
 "use strict";
-var __assign = (this && this.__assign) || function () {
-    __assign = Object.assign || function(t) {
-        for (var s, i = 1, n = arguments.length; i < n; i++) {
-            s = arguments[i];
-            for (var p in s) if (Object.prototype.hasOwnProperty.call(s, p))
-                t[p] = s[p];
-        }
-        return t;
-    };
-    return __assign.apply(this, arguments);
-};
 var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
     function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
     return new (P || (P = Promise))(function (resolve, reject) {
@@ -55,49 +44,20 @@ var functions_1 = require("./functions");
 exports.router = express_1.default.Router();
 exports.router.get('/', function (req, res) {
     return __awaiter(this, void 0, void 0, function () {
-        var users;
+        var areas;
         return __generator(this, function (_a) {
             switch (_a.label) {
-                case 0: return [4 /*yield*/, functions_1.query('SELECT `users`.`id`,`users`.`userName`,`users`.`name`,`users`.`permission` FROM `hackton`.`users`;', [])
-                        .catch(functions_1.errHandlerExpress('get_user', 400, res))];
+                case 0: return [4 /*yield*/, functions_1.query('SELECT * FROM `hackton`.`areas`;', [])
+                        .catch(functions_1.errHandlerExpress('get areas', 400, res))];
                 case 1:
-                    users = _a.sent();
-                    res.json(users);
+                    areas = _a.sent();
+                    res.json(areas);
                     return [2 /*return*/];
             }
         });
     });
 });
-exports.router.post('/login', function (req, res) {
-    return __awaiter(this, void 0, void 0, function () {
-        var body, sql, parameters, user;
-        return __generator(this, function (_a) {
-            switch (_a.label) {
-                case 0:
-                    body = req.body;
-                    sql = 'SELECT `users`.`id`,`users`.`name`,`users`.`permission` FROM `hackton`.`users`  where `users`.`userName`= ? and `users`.`password` = ? ;';
-                    parameters = [body.userName, body.password];
-                    return [4 /*yield*/, functions_1.query(sql, parameters).catch(functions_1.errHandlerExpress('login', 400, res))];
-                case 1:
-                    user = _a.sent();
-                    if (user.length != 1)
-                        return [2 /*return*/, functions_1.errHandlerExpress('login', 401, res)('insert.affectedRows != 1')];
-                    res.json(__assign(__assign({}, user[0]), { token: functions_1.generateToken(user[0]) }));
-                    return [2 /*return*/];
-            }
-        });
-    });
-});
-exports.router.post('/logOut', function (req, res) {
-    return __awaiter(this, void 0, void 0, function () {
-        return __generator(this, function (_a) {
-            functions_1.removeToken(req.headers.authentication);
-            res.json();
-            return [2 /*return*/];
-        });
-    });
-});
-exports.router.post('/add_user', function (req, res) {
+exports.router.post('/', function (req, res) {
     var _a;
     return __awaiter(this, void 0, void 0, function () {
         var body, sql, parameters, insert;
@@ -105,44 +65,42 @@ exports.router.post('/add_user', function (req, res) {
             switch (_b.label) {
                 case 0:
                     if (((_a = functions_1.chackToken(req.headers.authentication)) === null || _a === void 0 ? void 0 : _a.permission) != 'admin')
-                        return [2 /*return*/, functions_1.errHandlerExpress('add_user', 401, res)('not admin permission')];
+                        return [2 /*return*/, functions_1.errHandlerExpress('add_areas', 401, res)('not admin permission')];
                     body = req.body;
-                    sql = 'INSERT INTO `hackton`.`users` (`userName`,`password`,`name`,`permission`) VALUES ( ? , ? , ? , ? );';
-                    parameters = [body.userName, body.password, body.name, body.permission];
-                    return [4 /*yield*/, functions_1.query(sql, parameters).catch(functions_1.errHandlerExpress('add_user', 400, res))];
+                    sql = 'INSERT INTO `hackton`.`areas` (`name`) VALUES ( ?  );';
+                    parameters = [body.name];
+                    return [4 /*yield*/, functions_1.query(sql, parameters).catch(functions_1.errHandlerExpress('add_areas', 400, res))];
                 case 1:
                     insert = _b.sent();
                     if (insert.affectedRows == 1)
                         res.json({ id: insert.insertId });
                     else
-                        functions_1.errHandlerExpress('add_user', 400, res)('insert.affectedRows != 1');
+                        functions_1.errHandlerExpress('add_areas', 400, res)('insert.affectedRows != 1');
                     return [2 /*return*/];
             }
         });
     });
 });
-exports.router.delete('/:userId', function (req, res) {
+exports.router.delete('/:areaId', function (req, res) {
     var _a;
     return __awaiter(this, void 0, void 0, function () {
-        var sql, insert;
+        var sql, deleteObj;
         return __generator(this, function (_b) {
             switch (_b.label) {
                 case 0:
-                    if (+req.params.userId == 1)
-                        return [2 /*return*/, functions_1.errHandlerExpress('add_user', 400, res)('not delete user number 1')];
                     if (((_a = functions_1.chackToken(req.headers.authentication)) === null || _a === void 0 ? void 0 : _a.permission) != 'admin')
-                        return [2 /*return*/, functions_1.errHandlerExpress('delete_user', 401, res)('not admin permission')];
-                    sql = ' DELETE FROM `hackton`.`users` WHERE `users`.`id` = ? ;';
-                    return [4 /*yield*/, functions_1.query(sql, [req.params.userId]).catch(functions_1.errHandlerExpress('add_user', 400, res))];
+                        return [2 /*return*/, functions_1.errHandlerExpress('delete area', 401, res)('not admin permission')];
+                    sql = ' DELETE FROM `hackton`.`areas` WHERE `areas`.`id` = ? ;';
+                    return [4 /*yield*/, functions_1.query(sql, [req.params.areaId]).catch(functions_1.errHandlerExpress('delte area', 400, res))];
                 case 1:
-                    insert = _b.sent();
-                    if (insert.affectedRows == 1)
+                    deleteObj = _b.sent();
+                    if (deleteObj.affectedRows == 1)
                         res.json();
                     else
-                        functions_1.errHandlerExpress('add_user', 400, res)('insert.affectedRows != 1');
+                        functions_1.errHandlerExpress('delete area', 400, res)('insert.affectedRows != 1');
                     return [2 /*return*/];
             }
         });
     });
 });
-//# sourceMappingURL=userRouter.js.map
+//# sourceMappingURL=areaRouter copy.js.map

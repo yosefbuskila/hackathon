@@ -1,0 +1,26 @@
+import express from 'express'
+import { areas } from './areaRouter'
+import { gates } from './gateRouter'
+import { errHandlerExpress, query, insertObj, generateToken, chackToken, removeToken } from './functions'
+export let router = express.Router()
+
+router.post('/movement', async function (req, res) {
+    if (chackToken(req.headers.authentication as string))
+        return errHandlerExpress('movement', 401, res)('not authentication')
+    let body = req.body
+    let number = body.count || 1
+    if (!body.entry) number = number * -1
+    let areaID = gates[body.gate].areaID
+    areas[areaID].countPeople += number
+    if (areas[areaID].countPeople < 0) areas[areaID].countPeople = 0
+    let isFull = false
+    if (areas[areaID].countPeople >= areas[areaID].max) isFull = true
+    res.json({ isFull })
+})
+setInterval(_ => {
+    Object.values(areas).forEach(area => {
+        let sql = 'UPDATE `hackton`.`areas` SET `areas`.`countPeople` = ? WHERE (`id` = ? );'
+        let parameters = [area.countPeople, area.id]
+        query(sql, parameters)
+    })
+}, 10_000)
