@@ -23,4 +23,4 @@ setInterval(_ => {
         let parameters = [area.countPeople, area.id]
         query(sql, parameters)
     })
-}, 10_000)
+}, 2_000)

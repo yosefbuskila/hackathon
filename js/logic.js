@@ -72,5 +72,5 @@ setInterval(function (_) {
         var parameters = [area.countPeople, area.id];
         functions_1.query(sql, parameters);
     });
-}, 10000);
+}, 2000);
 //# sourceMappingURL=logic.js.map
