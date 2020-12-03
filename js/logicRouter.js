@@ -74,14 +74,14 @@ exports.router.post('/movement', function (req, res) {
 });
 exports.router.post('/continue', function (req, res) {
     return __awaiter(this, void 0, void 0, function () {
-        var body, areaID, isContinue;
+        var body, areaID, isFull;
         return __generator(this, function (_a) {
             body = req.body;
             areaID = gateRouter_1.gates[body.gate].areaID;
-            isContinue = true;
+            isFull = false;
             if (areaRouter_1.areas[areaID].countPeople >= areaRouter_1.areas[areaID].max)
-                isContinue = false;
-            res.json({ continue: isContinue });
+                isFull = true;
+            res.json({ isFull: isFull });
             return [2 /*return*/];
         });
     });
