@@ -48,7 +48,7 @@ exports.router.post('/movement', function (req, res) {
     return __awaiter(this, void 0, void 0, function () {
         var body, number, areaID, sql, parameters, isFull;
         return __generator(this, function (_a) {
-            if (functions_1.chackToken(req.headers.authentication))
+            if (!functions_1.chackToken(req.headers.authentication))
                 return [2 /*return*/, functions_1.errHandlerExpress('movement', 401, res)('not authentication')];
             body = req.body;
             number = body.count || 1;
@@ -76,4 +76,4 @@ exports.router.post('/movement', function (req, res) {
 //         query(sql, parameters)
 //     })
 // }, 2_000)
-//# sourceMappingURL=logic.js.map
+//# sourceMappingURL=logicRouter.js.map
