@@ -8,6 +8,10 @@ import { router as logRouter } from './logRouter'
 const port = process.env.PORT || 3000
 
 const app = express()
+app.use(['/gate'], function (req, res) {
+    res.sendFile(__dirname + '/gate/index.html');
+})
+app.use(express.static(__dirname + '/gate'))
 app.use(cors())
 app.use(express.json({ limit: '5mb' }))
 app.use('/user', userRouter)
@@ -16,4 +20,5 @@ app.use('/gate', gateRouter)
 app.use('/logic', logicRouter)
 app.use('/log', logRouter)
 
-app.listen(port, () => console.log(`Example app listening at http://localhost:${port}`))   
+app.listen(port, () => console.log(`Example app listening at http://localhost:${port}`))
+//
