@@ -8,15 +8,15 @@ import { router as logRouter } from './logRouter'
 const port = process.env.PORT || 3000
 
 const app = express()
-app.use(['/gatee'], function (req, res) {
-    res.sendFile(__dirname + '/gate/index.html');
-})
+// app.use(['/gatee'], function (req, res) {
+//     res.sendFile(__dirname + '/gate/index.html');
+// })
 app.use(['/control'], function (req, res) {
     res.sendFile(__dirname + '/controler2/index.html');
 })
 let publicf = __dirname + '\\controler2'
 app.use(express.static(publicf))
-app.use(express.static(__dirname + '/gate'))
+// app.use(express.static(__dirname + '/gate'))
 app.use(cors())
 app.use(express.json({ limit: '5mb' }))
 app.use('/user', userRouter)

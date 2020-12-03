@@ -12,15 +12,15 @@ var logicRouter_1 = require("./logicRouter");
 var logRouter_1 = require("./logRouter");
 var port = process.env.PORT || 3000;
 var app = express_1.default();
-app.use(['/gatee'], function (req, res) {
-    res.sendFile(__dirname + '/gate/index.html');
-});
+// app.use(['/gatee'], function (req, res) {
+//     res.sendFile(__dirname + '/gate/index.html');
+// })
 app.use(['/control'], function (req, res) {
     res.sendFile(__dirname + '/controler2/index.html');
 });
 var publicf = __dirname + '\\controler2';
 app.use(express_1.default.static(publicf));
-app.use(express_1.default.static(__dirname + '/gate'));
+// app.use(express.static(__dirname + '/gate'))
 app.use(cors_1.default());
 app.use(express_1.default.json({ limit: '5mb' }));
 app.use('/user', userRouter_1.router);
