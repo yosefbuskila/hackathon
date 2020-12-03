@@ -30,7 +30,7 @@ router.post('/continue', async function (req, res) {
     let areaID = gates[body.gate].areaID;
     let isFull = false;
     if (areas[areaID].countPeople >= areas[areaID].max) isFull = true
-    res.json({ continue: isFull })
+    res.json({ isFull })
 })
 // setInterval(_ => {
 //     Object.values(areas).forEach(area => {
