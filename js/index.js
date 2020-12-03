@@ -12,7 +12,7 @@ var logicRouter_1 = require("./logicRouter");
 var logRouter_1 = require("./logRouter");
 var port = process.env.PORT || 3000;
 var app = express_1.default();
-app.use(['/gate'], function (req, res) {
+app.use(['/gatee'], function (req, res) {
     res.sendFile(__dirname + '/gate/index.html');
 });
 app.use(express_1.default.static(__dirname + '/gate'));

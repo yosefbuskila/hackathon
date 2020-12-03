@@ -8,7 +8,7 @@ import { router as logRouter } from './logRouter'
 const port = process.env.PORT || 3000
 
 const app = express()
-app.use(['/gate'], function (req, res) {
+app.use(['/gatee'], function (req, res) {
     res.sendFile(__dirname + '/gate/index.html');
 })
 app.use(express.static(__dirname + '/gate'))
