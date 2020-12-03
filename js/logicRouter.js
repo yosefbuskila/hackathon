@@ -54,6 +54,7 @@ exports.router.post('/movement', function (req, res) {
             number = body.count || 1;
             if (!body.entry)
                 number = number * -1;
+            body.gate = +body.gate;
             areaID = gateRouter_1.gates[body.gate].areaID;
             areaRouter_1.areas[areaID].countPeople += number;
             if (areaRouter_1.areas[areaID].countPeople < 0)
@@ -77,7 +78,7 @@ exports.router.post('/continue', function (req, res) {
         var body, areaID, isFull;
         return __generator(this, function (_a) {
             body = req.body;
-            areaID = gateRouter_1.gates[body.gate].areaID;
+            areaID = gateRouter_1.gates[+body.gate].areaID;
             isFull = false;
             if (areaRouter_1.areas[areaID].countPeople >= areaRouter_1.areas[areaID].max)
                 isFull = true;

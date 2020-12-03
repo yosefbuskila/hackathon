@@ -10,6 +10,7 @@ router.post('/movement', async function (req, res) {
     let body = req.body
     let number = body.count || 1
     if (!body.entry) number = number * -1
+    body.gate = +body.gate
     let areaID = gates[body.gate].areaID
     areas[areaID].countPeople += number
     if (areas[areaID].countPeople < 0) areas[areaID].countPeople = 0
@@ -27,7 +28,7 @@ router.post('/movement', async function (req, res) {
 })
 router.post('/continue', async function (req, res) {
     let body = req.body
-    let areaID = gates[body.gate].areaID;
+    let areaID = gates[+body.gate].areaID;
     let isFull = false;
     if (areas[areaID].countPeople >= areas[areaID].max) isFull = true
     res.json({ isFull })

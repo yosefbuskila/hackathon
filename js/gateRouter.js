@@ -43,7 +43,7 @@ var express_1 = __importDefault(require("express"));
 var functions_1 = require("./functions");
 exports.router = express_1.default.Router();
 function getGates() {
-    return functions_1.query('SELECT * FROM `hackton`.`gates`;', []);
+    return functions_1.query('SELECT gates.id, gates.name, gates.areaID, areas.name as areaName FROM hackton.gates join hackton.areas on gates.areaID=areas.id;', []);
 }
 exports.gates = {};
 function init() {

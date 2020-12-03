@@ -2,7 +2,7 @@ import express from 'express'
 import { errHandlerExpress, query, insertObj, generateToken, chackToken, removeToken } from './functions'
 export let router = express.Router()
 function getGates() {
-    return query('SELECT * FROM `hackton`.`gates`;', [])
+    return query('SELECT gates.id, gates.name, gates.areaID, areas.name as areaName FROM hackton.gates join hackton.areas on gates.areaID=areas.id;', [])
 }
 export let gates: {
     [id: number]: {
