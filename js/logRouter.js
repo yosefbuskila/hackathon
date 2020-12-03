@@ -40,57 +40,23 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 var express_1 = __importDefault(require("express"));
-var areaRouter_1 = require("./areaRouter");
-var gateRouter_1 = require("./gateRouter");
 var functions_1 = require("./functions");
 exports.router = express_1.default.Router();
-exports.router.post('/movement', function (req, res) {
+exports.router.get('/:areaID/:lastID', function (req, res) {
     return __awaiter(this, void 0, void 0, function () {
-        var body, number, areaID, sql, parameters, sqlInsert, parametersInsert, isFull;
+        var sql, parameters, log;
         return __generator(this, function (_a) {
-            if (!functions_1.chackToken(req.headers.authentication))
-                return [2 /*return*/, functions_1.errHandlerExpress('movement', 401, res)('not authentication')];
-            body = req.body;
-            number = body.count || 1;
-            if (!body.entry)
-                number = number * -1;
-            areaID = gateRouter_1.gates[body.gate].areaID;
-            areaRouter_1.areas[areaID].countPeople += number;
-            if (areaRouter_1.areas[areaID].countPeople < 0)
-                areaRouter_1.areas[areaID].countPeople = 0;
-            sql = 'UPDATE `hackton`.`areas` SET `areas`.`countPeople` = ? WHERE (`id` = ? );';
-            parameters = [areaRouter_1.areas[areaID].countPeople, areaRouter_1.areas[areaID].id];
-            functions_1.query(sql, parameters);
-            sqlInsert = 'INSERT INTO `hackton`.`log` (`areaID`,`area`,`gateID`,`gate`,`count`) VALUES ( ? , ? , ? , ? , ?  );';
-            parametersInsert = [areaID, areaRouter_1.areas[areaID].name, body.gate, gateRouter_1.gates[body.gate].name, number];
-            functions_1.query(sqlInsert, parametersInsert).catch(functions_1.errHandlerExpress('add_gates', 400, res));
-            isFull = false;
-            if (areaRouter_1.areas[areaID].countPeople >= areaRouter_1.areas[areaID].max)
-                isFull = true;
-            res.json({ isFull: isFull });
-            return [2 /*return*/];
+            switch (_a.label) {
+                case 0:
+                    sql = 'SELECT * FROM `hackton`.`log` where areaID= ? and  id > ?;';
+                    parameters = [req.params.areaID, req.params.lastID];
+                    return [4 /*yield*/, functions_1.query(sql, parameters)];
+                case 1:
+                    log = _a.sent();
+                    res.json(log);
+                    return [2 /*return*/];
+            }
         });
     });
 });
-exports.router.post('/continue', function (req, res) {
-    return __awaiter(this, void 0, void 0, function () {
-        var body, areaID, isContinue;
-        return __generator(this, function (_a) {
-            body = req.body;
-            areaID = gateRouter_1.gates[body.gate].areaID;
-            isContinue = true;
-            if (areaRouter_1.areas[areaID].countPeople >= areaRouter_1.areas[areaID].max)
-                isContinue = false;
-            res.json({ continue: isContinue });
-            return [2 /*return*/];
-        });
-    });
-});
-// setInterval(_ => {
-//     Object.values(areas).forEach(area => {
-//         let sql = 'UPDATE `hackton`.`areas` SET `areas`.`countPeople` = ? WHERE (`id` = ? );'
-//         let parameters = [area.countPeople, area.id]
-//         query(sql, parameters)
-//     })
-// }, 2_000)
-//# sourceMappingURL=logicRouter.js.map
+//# sourceMappingURL=logRouter.js.map
