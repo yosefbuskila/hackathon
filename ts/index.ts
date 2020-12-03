@@ -12,9 +12,9 @@ const app = express()
 //     res.sendFile(__dirname + '/gate/index.html');
 // })
 app.use(['/control'], function (req, res) {
-    res.sendFile(__dirname + '/controler2/index.html');
+    res.sendFile(__dirname + '/public/index.html');
 })
-let publicf = __dirname + '\\controler2'
+let publicf = __dirname + '/public/'
 app.use(express.static(publicf))
 // app.use(express.static(__dirname + '/gate'))
 app.use(cors())

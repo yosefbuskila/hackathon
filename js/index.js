@@ -16,9 +16,9 @@ var app = express_1.default();
 //     res.sendFile(__dirname + '/gate/index.html');
 // })
 app.use(['/control'], function (req, res) {
-    res.sendFile(__dirname + '/controler2/index.html');
+    res.sendFile(__dirname + '/public/index.html');
 });
-var publicf = __dirname + '\\controler2';
+var publicf = __dirname + '/public/';
 app.use(express_1.default.static(publicf));
 // app.use(express.static(__dirname + '/gate'))
 app.use(cors_1.default());
